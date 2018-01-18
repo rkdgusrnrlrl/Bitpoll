@@ -171,17 +171,21 @@ def _finish_account_request(request, info):
     email_content = render_to_string('registration/create_email.txt', {
         'activation_link': activation_link
     })
+    #TEMP print email link
+    print(activation_link)
     return _send_mail_or_error_page(_('Account creation at %s' % settings.SITE_NAME),
                                     email_content, email, request)
 
 
 def _send_mail_or_error_page(subject, content, address, request):
+    #TEMP can't send email in local env
+    """
     try:
         send_mail(subject, content, None, [address])
         if settings.DEBUG:
             print(u"VALIDATION MAIL to {0}\nSubject: {1}\n{2}".format(
                 address, subject, content))
-    except SMTPRecipientsRefused as e:
+    except SMTPRecipientsRefused as e:c
         wrong_email, (error_code, error_msg) = e.recipients.items()[0]
         unknown = 'User unknown' in error_msg
         if not unknown:
@@ -198,5 +202,6 @@ def _send_mail_or_error_page(subject, content, address, request):
             'error_msg': error_msg,
             'recipient': wrong_email
         })
+    """
 
     return redirect('registration_request_successful', address)
